@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CoditByNeha — Study Hub</title>
+  <meta name="theme-color" content="#0b1224" />
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* =======================
+       Design Tokens
+    ======================= */
+    :root{
+      --bg:#0b1224;            /* dark base */
+      --bg-soft:#0e1630;       /* surfaces */
+      --text:#eaf0ff;          /* text */
+      --muted:#cbd5e1;         /* secondary */
+      --border:rgba(255,255,255,.12);
+      --primary:#5b7cfa;       /* brand */
+      --accent:#9b5cf6;        /* accent */
+      --success:#22c55e; --warning:#f59e0b; --danger:#ef4444;
+      --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --glass:rgba(255,255,255,.06);
+    }
+    :root.light{
+      --bg:#f7f9fc; --bg-soft:#ffffff; --text:#0f172a; --muted:#475569;
+      --border:rgba(2,6,23,.12); --primary:#3b82f6; --accent:#7c3aed;
+      --glass:rgba(15,23,42,.06); --shadow:0 10px 30px rgba(2,6,23,.08);
+    }
+
+    /* Base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial; color:var(--text); background:
+      radial-gradient(1200px 800px at -10% -10%, rgba(91,124,250,.12), transparent 40%),
+      radial-gradient(1000px 800px at 110% 10%, rgba(155,92,246,.12), transparent 40%), var(--bg);
+      line-height:1.6; overflow-x:hidden}
+    a{color:inherit; text-decoration:none}
+    .container{width:min(1200px,92%); margin-inline:auto}
+    img{max-width:100%; display:block}
+
+    /* Header */
+    header{position:sticky; top:0; backdrop-filter:blur(10px); background:color-mix(in oklab, var(--bg) 70%, transparent); border-bottom:1px solid var(--border); z-index:40}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:.9rem 0}
+    .brand{display:flex; align-items:center; gap:.7rem; font-weight:900; letter-spacing:.3px}
+    .logo{width:34px; height:34px; display:grid; place-items:center; border-radius:12px; color:#fff; background:conic-gradient(from 220deg,var(--primary),var(--accent)); font-weight:900}
+    .nav ul{display:flex; gap:1rem; list-style:none; margin:0; padding:0}
+    .nav a{padding:.6rem .9rem; border-radius:10px; color:var(--muted)}
+    .nav a:hover{background:var(--glass); color:var(--text)}
+    .nav-ctas{display:flex; align-items:center; gap:.6rem}
+    .icon-btn{width:40px; height:40px; border-radius:10px; display:grid; place-items:center; border:1px solid var(--border); background:var(--glass); color:var(--text); cursor:pointer}
+
+    /* Hero */
+    .hero{padding:4.5rem 0 2rem}
+    .hero h1{font-size:clamp(2rem,4vw+1rem,3.6rem); line-height:1.1; margin:0 0 .6rem; letter-spacing:-.02em}
+    .hero p{color:var(--muted)}
+    .bar{display:flex; gap:.6rem; margin-top:1rem; flex-wrap:wrap}
+    .btn{display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 1.1rem; border-radius:999px; border:1px solid var(--border); background:linear-gradient(180deg,var(--primary),var(--accent)); color:#fff; font-weight:700; box-shadow:var(--shadow); transition:transform .15s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn.ghost{background:var(--glass); color:var(--text)}
+    .tag{display:inline-flex; align-items:center; gap:.4rem; padding:.34rem .7rem; border-radius:999px; background:var(--glass); border:1px dashed var(--border); color:var(--muted); font-size:.85rem}
+
+    /* Search & Filters */
+    .panel{margin-top:1.2rem; padding:1rem; border:1px solid var(--border); border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); display:grid; gap:.8rem}
+    .search-row{display:flex; gap:.6rem; flex-wrap:wrap}
+    .search{flex:1; min-width:240px; display:flex; align-items:center; gap:.6rem; padding:.8rem 1rem; border-radius:12px; border:1px solid var(--border); background:var(--bg-soft)}
+    .search input{flex:1; background:transparent; border:none; outline:none; color:var(--text)}
+    .filters{display:flex; gap:.4rem; flex-wrap:wrap}
+    .pill{padding:.4rem .7rem; border-radius:999px; border:1px solid var(--border); background:var(--glass); font-size:.85rem; cursor:pointer}
+    .pill.active{outline:2px solid color-mix(in oklab, var(--primary) 70%, white 30%)}
+
+    /* Grid */
+    .grid{display:grid; gap:1rem}
+    .grid.col-3{grid-template-columns:repeat(3, minmax(0,1fr))}
+    @media (max-width: 1024px){ .grid.col-3{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width: 700px){ .grid.col-3{grid-template-columns:1fr} }
+
+    /* Card */
+    .card{position:relative; padding:1rem; border-radius:16px; border:1px solid var(--border); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); display:flex; flex-direction:column; gap:.5rem}
+    .card .meta{display:flex; align-items:center; gap:.5rem; color:var(--muted); font-size:.9rem}
+    .badge{display:inline-flex; align-items:center; gap:.35rem; padding:.3rem .55rem; border-radius:999px; border:1px solid var(--border); background:var(--glass); font-size:.75rem; color:var(--muted)}
+    .card-actions{display:flex; gap:.5rem; margin-top:.4rem; flex-wrap:wrap}
+    .bookmark{position:absolute; top:.8rem; right:.8rem; width:36px; height:36px; border-radius:10px; border:1px solid var(--border); background:var(--glass); display:grid; place-items:center; cursor:pointer}
+    .bookmark.active{background:linear-gradient(180deg,var(--primary),var(--accent)); color:#fff}
+
+    /* Sections */
+    section{padding:1.2rem 0}
+    .section-title{display:flex; align-items:center; justify-content:space-between; gap:1rem}
+
+    /* Tracks / Syllabus Builder */
+    .tracks{display:grid; grid-template-columns:1.2fr .8fr; gap:1rem}
+    @media (max-width: 900px){ .tracks{grid-template-columns:1fr} }
+    .module{padding:.8rem; border-radius:12px; border:1px dashed var(--border); background:var(--glass)}
+    .module h4{margin:.2rem 0}
+    .module ul{margin:.2rem 0 0; padding-left:1rem}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border); margin-top:2rem; padding:1.4rem 0; color:var(--muted)}
+
+    /* Reveal */
+    .reveal{opacity:0; transform:translateY(14px); transition:all .6s ease}
+    .reveal.visible{opacity:1; transform:none}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top">
+        <span class="logo">CBN</span>
+        <span>CoditByNeha</span>
+      </a>
+      <nav class="hide-mobile">
+        <ul>
+          <li><a href="#materials">Materials</a></li>
+          <li><a href="#tracks">Tracks</a></li>
+          <li><a href="#bookmarks">Bookmarks</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#roadmaps">Roadmaps</a></li>
+        </ul>
+      </nav>
+      <div class="nav-ctas">
+        <button class="icon-btn" id="themeBtn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container reveal" id="top">
+    <span class="tag"><i class="fa-solid fa-graduation-cap"></i> Learn • Code • Share</span>
+    <h1>One place for C, C++, Java, frameworks, backend, graphics & more.</h1>
+    <p>Search curated notes, cheatsheets, problem-sets, tutorials, and roadmaps. Build your own study track and save progress.</p>
+    <div class="bar">
+      <a class="btn" href="#materials"><i class="fa-solid fa-magnifying-glass"></i> Explore Materials</a>
+      <a class="btn ghost" href="#tracks"><i class="fa-solid fa-route"></i> Pick a Track</a>
+    </div>
+  </section>
+
+  <!-- Search + Filters -->
+  <section class="container reveal" id="materials">
+    <div class="section-title">
+      <h3 style="margin:0">Study Materials</h3>
+      <span class="badge"><i class="fa-solid fa-database"></i> <span id="resultCount">0</span> items</span>
+    </div>
+
+    <div class="panel">
+      <div class="search-row">
+        <div class="search" role="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="q" type="search" placeholder="Search topic, keyword or tag (e.g. 'pointers', 'OOP', 'OpenGL')" autocomplete="off" />
+        </div>
+        <button class="btn ghost" id="clearFilters"><i class="fa-solid fa-eraser"></i> Clear</button>
+      </div>
+      <div class="filters" id="filters">
+        <!-- dynamic filter pills injected by JS -->
+      </div>
+    </div>
+
+    <div class="grid col-3" id="cards" style="margin-top:1rem"></div>
+  </section>
+
+  <!-- Tracks / Syllabus Builder -->
+  <section class="container reveal" id="tracks">
+    <div class="section-title">
+      <h3 style="margin:0">Tracks & Syllabus</h3>
+      <span class="badge"><i class="fa-solid fa-clipboard-check"></i> Progress saved locally</span>
+    </div>
+
+    <div class="tracks">
+      <div class="card">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:.6rem">
+          <h4 style="margin:.2rem 0">Choose a Track</h4>
+          <select id="trackSelect" style="padding:.5rem .7rem; border-radius:10px; border:1px solid var(--border); background:var(--bg-soft); color:var(--text)"></select>
+        </div>
+        <div id="modules" style="margin-top:.8rem; display:grid; gap:.6rem"></div>
+      </div>
+
+      <div class="card">
+        <h4 style="margin:.2rem 0">How it works</h4>
+        <ol style="margin:.2rem 0 0; color:var(--muted)">
+          <li>Pick a track (e.g., C++ DSA or Java Backend).</li>
+          <li>Mark modules as complete—your progress is auto-saved.</li>
+          <li>Bookmark materials from the grid for quick access.</li>
+        </ol>
+        <div class="module" style="margin-top:.8rem">
+          <h4>Tips</h4>
+          <ul>
+            <li>Use search and filter pills to narrow results fast.</li>
+            <li>Open multiple cards in new tabs for side-by-side study.</li>
+            <li>Revisit <strong>Bookmarks</strong> to continue where you left off.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bookmarks -->
+  <section class="container reveal" id="bookmarks">
+    <div class="section-title">
+      <h3 style="margin:0">Your Bookmarks</h3>
+      <button class="btn ghost" id="clearBms"><i class="fa-solid fa-trash"></i> Clear all</button>
+    </div>
+    <div id="bmGrid" class="grid col-3" style="margin-top:1rem"></div>
+  </section>
+
+  <!-- Roadmaps -->
+  <section class="container reveal" id="roadmaps">
+    <div class="section-title">
+      <h3 style="margin:0">Roadmaps & 21‑Day Plans</h3>
+      <span class="badge"><i class="fa-solid fa-route"></i> Guided learning</span>
+    </div>
+
+    <div class="grid col-3" style="margin-top:1rem">
+      <article class="card">
+        <h4 style="margin:.2rem 0">📸 Photo Editing — 21‑Day Plan</h4>
+        <details open>
+          <summary>Week 1 (Days 1–7): Foundations</summary>
+          <ul>
+            <li><strong>Days 1–2</strong>: Interface — import/export, layers, tools.</li>
+            <li><strong>Days 3–4</strong>: Crop, resize, straighten, aspect ratios.</li>
+            <li><strong>Days 5–6</strong>: Exposure — brightness, contrast, highlights, shadows.</li>
+            <li><strong>Day 7</strong>: Practice edit 5–10 photos with only basics.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Week 2 (Days 8–14): Core Editing</summary>
+          <ul>
+            <li><strong>Days 8–9</strong>: Color — white balance, saturation, vibrance, temperature.</li>
+            <li><strong>Day 10</strong>: Retouch — blemish removal, clone, heal.</li>
+            <li><strong>Day 11</strong>: Blur/sharpen, noise reduction.</li>
+            <li><strong>Day 12</strong>: Text & overlays — logo, watermark, captions.</li>
+            <li><strong>Days 13–14</strong>: Mini‑projects — before/after set.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Week 3 (Days 15–21): Style & Workflow</summary>
+          <ul>
+            <li><strong>Days 15–16</strong>: Presets/LUTs, batch edits.</li>
+            <li><strong>Day 17</strong>: Composition tweaks — crop ratios, guides.</li>
+            <li><strong>Day 18</strong>: RAW vs JPG, export formats.</li>
+            <li><strong>Day 19</strong>: Mobile‑only workflow.</li>
+            <li><strong>Day 20</strong>: Laptop/desktop workflow.</li>
+            <li><strong>Day 21</strong>: Portfolio review — pick 10 best edits.</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <span class="badge"><i class="fa-solid fa-mobile-screen"></i> Mobile & Laptop</span>
+          <span class="badge"><i class="fa-regular fa-clock"></i> ~30–60m/day</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <h4 style="margin:.2rem 0">💻 Coding Basics — 21‑Day Plan</h4>
+        <details open>
+          <summary>Week 1 (Days 1–7): Programming Foundations</summary>
+          <ul>
+            <li><strong>Day 1</strong>: What is programming? Input → process → output.</li>
+            <li><strong>Day 2</strong>: Variables & data types.</li>
+            <li><strong>Day 3</strong>: Operators.</li>
+            <li><strong>Day 4</strong>: Conditionals (if/else, switch).</li>
+            <li><strong>Day 5</strong>: Loops (for/while).</li>
+            <li><strong>Day 6</strong>: Functions (define & call).</li>
+            <li><strong>Day 7</strong>: Mini‑projects (calculator, guessing game).</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Week 2 (Days 8–14): Web Basics</summary>
+          <ul>
+            <li><strong>Day 8</strong>: HTML — tags, headings, lists, links.</li>
+            <li><strong>Day 9</strong>: Forms & inputs.</li>
+            <li><strong>Day 10</strong>: CSS — selectors, box model, Flexbox.</li>
+            <li><strong>Day 11</strong>: CSS Grid & responsiveness.</li>
+            <li><strong>Day 12</strong>: JavaScript basics (DOM).</li>
+            <li><strong>Day 13</strong>: Events & fetch.</li>
+            <li><strong>Day 14</strong>: Build a simple website.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Week 3 (Days 15–21): Projects</summary>
+          <ul>
+            <li><strong>Day 15</strong>: Portfolio page.</li>
+            <li><strong>Day 16</strong>: Product gallery with filters.</li>
+            <li><strong>Day 17</strong>: Responsive landing page.</li>
+            <li><strong>Day 18</strong>: JavaScript mini‑apps (todo, notes).</li>
+            <li><strong>Day 19</strong>: Deploy to Vercel.</li>
+            <li><strong>Days 20–21</strong>: Polish & share.</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <span class="badge"><i class="fa-solid fa-code"></i> HTML/CSS/JS</span>
+          <span class="badge"><i class="fa-regular fa-clock"></i> ~45–90m/day</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <h4 style="margin:.2rem 0">🚀 3‑Month Web Dev Skill Plan</h4>
+        <details open>
+          <summary>Month 1 — Frontend & React Pro</summary>
+          <ul>
+            <li>Advanced JS (ES6+, async/await).</li>
+            <li>Responsive design (Flexbox/Grid, Tailwind).</li>
+            <li>React: Hooks, Context, Router.</li>
+            <li>Projects: Portfolio, product gallery, landing page.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Month 2 — Backend & APIs</summary>
+          <ul>
+            <li>Node.js + Express <em>or</em> Spring Boot.</li>
+            <li>REST APIs (CRUD), DB: MongoDB/PostgreSQL.</li>
+            <li>Auth with JWT.</li>
+            <li>Project: Full‑stack CRUD app.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Month 3 — Production & Advanced</summary>
+          <ul>
+            <li>Next.js (SSR/SEO), TypeScript.</li>
+            <li>UI libs: MUI, shadcn/ui. State: Redux Toolkit/Zustand.</li>
+            <li>DevOps: Docker, deployment, monitoring.</li>
+            <li>Project: SaaS dashboard with auth.</li>
+          </ul>
+        </details>
+        <div class="module" style="margin-top:.6rem">
+          <h4>📚 Resources (Suggested)</h4>
+          <ul>
+            <li>HTML/CSS/JS: freeCodeCamp, MDN Web Docs, Kevin Powell (CSS).</li>
+            <li>React & TS: React Docs, Mosh, Net Ninja, official TypeScript docs.</li>
+            <li>Git/GitHub: Traversy Media, GitHub Learning Lab.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="container reveal" id="about">
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:.7rem">
+        <span class="logo" style="width:28px; height:28px">CBN</span>
+        <h4 style="margin:.2rem 0">About CoditByNeha</h4>
+      </div>
+      <p style="color:var(--muted)">A community-driven study hub for languages (C, C++, Java), frameworks (React, Spring, Node), backend, databases, computer graphics, and CS fundamentals. This sample is fully client-side and uses localStorage for your bookmarks and progress.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap">
+      <div style="display:flex; align-items:center; gap:.7rem">
+        <span class="logo" style="width:28px; height:28px">CBN</span>
+        <span>CoditByNeha</span>
+      </div>
+      <div style="display:flex; gap:.8rem; color:var(--muted)">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+      <div style="color:var(--muted)">© <span id="year"></span> CoditByNeha</div>
+    </div>
+  </footer>
+
+  <script>
+  // =====================
+  // THEME
+  // =====================
+  const root = document.documentElement;
+  const storedTheme = localStorage.getItem('cbn_theme');
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  if (storedTheme === 'light' || (!storedTheme && prefersLight)) root.classList.add('light');
+  document.getElementById('themeBtn').addEventListener('click', ()=>{
+    root.classList.toggle('light');
+    localStorage.setItem('cbn_theme', root.classList.contains('light') ? 'light' : 'dark');
+    const i = document.querySelector('#themeBtn i');
+    i.className = root.classList.contains('light') ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  });
+
+  // =====================
+  // DATA (sample; replace links with your own)
+  // =====================
+  const MATERIALS = [
+    { id:'c-pointers', title:'C Language — Pointers Deep Dive', level:'Intermediate', type:'Notes', duration:'2h', tags:['C','Pointers','Memory'], category:'Languages', link:'#' },
+    { id:'c-structures', title:'C Language — Structures & Unions', level:'Beginner', type:'Cheatsheet', duration:'45m', tags:['C','Struct','Union'], category:'Languages', link:'#' },
+    { id:'cpp-oop', title:'C++ — OOP & STL Primer', level:'Intermediate', type:'Guide', duration:'3h', tags:['C++','OOP','STL'], category:'Languages', link:'#' },
+    { id:'cpp-dsa', title:'C++ — DSA Problem Set (100 Qs)', level:'Advanced', type:'Problem Set', duration:'—', tags:['C++','DSA'], category:'Languages', link:'#' },
+    { id:'java-core', title:'Java — Core Concepts & Collections', level:'Beginner', type:'Notes', duration:'2.5h', tags:['Java','Collections','OOP'], category:'Languages', link:'#' },
+    { id:'java-spring', title:'Spring Boot — REST API Starter', level:'Intermediate', type:'Tutorial', duration:'1.5h', tags:['Java','Spring Boot','REST'], category:'Frameworks', link:'#' },
+    { id:'js-react', title:'React — Hooks & Patterns', level:'Intermediate', type:'Guide', duration:'2h', tags:['React','JavaScript','Hooks'], category:'Frameworks', link:'#' },
+    { id:'node-auth', title:'Node.js — Auth with JWT', level:'Intermediate', type:'Tutorial', duration:'1h', tags:['Node.js','Auth','JWT'], category:'Backend', link:'#' },
+    { id:'db-sql', title:'SQL — Joins & Window Functions', level:'Intermediate', type:'Notes', duration:'1.2h', tags:['SQL','RDBMS'], category:'Backend', link:'#' },
+    { id:'db-nosql', title:'NoSQL — Modeling Basics', level:'Beginner', type:'Guide', duration:'1h', tags:['MongoDB','NoSQL'], category:'Backend', link:'#' },
+    { id:'os-basics', title:'Operating Systems — Processes & Threads', level:'Beginner', type:'Notes', duration:'2h', tags:['OS','Threads','Scheduling'], category:'CS', link:'#' },
+    { id:'networks', title:'Computer Networks — TCP/IP Cheatsheet', level:'Beginner', type:'Cheatsheet', duration:'30m', tags:['Networks','TCP/IP'], category:'CS', link:'#' },
+    { id:'cg-opengl', title:'Computer Graphics — OpenGL Intro', level:'Intermediate', type:'Tutorial', duration:'2h', tags:['Graphics','OpenGL'], category:'Graphics', link:'#' },
+    { id:'cg-shaders', title:'Shaders — GLSL Basics', level:'Advanced', type:'Guide', duration:'1.5h', tags:['GLSL','Shaders'], category:'Graphics', link:'#' },
+  ];
+
+  const TRACKS = {
+    'C++ DSA 6-Week': [
+      { id:'t1w1', title:'Week 1 — Basics & STL', items:['I/O, Loops','Vectors, Maps','Time complexity'] },
+      { id:'t1w2', title:'Week 2 — Arrays & Strings', items:['Two pointers','Sliding window','Hashing'] },
+      { id:'t1w3', title:'Week 3 — Linked Lists & Stacks', items:['SLL/DLL','Monotonic stack','Queue/Deque'] },
+      { id:'t1w4', title:'Week 4 — Trees', items:['Binary tree','BST','Traversal'] },
+      { id:'t1w5', title:'Week 5 — Graphs', items:['BFS/DFS','Topo sort','Dijkstra'] },
+      { id:'t1w6', title:'Week 6 — DP', items:['Knapsack','LIS','Grid DP'] },
+    ],
+    'Java Backend 4-Week': [
+      { id:'t2w1', title:'Week 1 — Java Core', items:['Collections','Streams','Concurrency basics'] },
+      { id:'t2w2', title:'Week 2 — Spring Boot', items:['REST controllers','JPA + H2','Validation'] },
+      { id:'t2w3', title:'Week 3 — Auth & Security', items:['JWT','Spring Security','CORS'] },
+      { id:'t2w4', title:'Week 4 — Deploy & Observability', items:['Docker','Logging','Actuator'] },
+    ],
+    'Graphics (OpenGL) 3-Week': [
+      { id:'t3w1', title:'Week 1 — Pipeline & Context', items:['Shaders 101','Buffers','Coordinate systems'] },
+      { id:'t3w2', title:'Week 2 — Drawing & Textures', items:['VAO/VBO','Textures','Transforms'] },
+      { id:'t3w3', title:'Week 3 — Lighting & Camera', items:['Phong','Camera','Materials'] },
+    ],
+  };
+
+  // =====================
+  // HELPERS
+  // =====================
+  const $ = (q,scope=document)=>scope.querySelector(q);
+  const $$ = (q,scope=document)=>Array.from(scope.querySelectorAll(q));
+  const YEAR = $('#year'); YEAR.textContent = new Date().getFullYear();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible'); io.unobserve(e.target)}})},{threshold:.12});
+  $$('.reveal').forEach(el=>io.observe(el));
+
+  // =====================
+  // FILTERS + SEARCH
+  // =====================
+  const state = { q:'', cats:new Set(), levels:new Set(), types:new Set(), bookmarks:new Set(JSON.parse(localStorage.getItem('cbn_bms')||'[]')) };
+  const unique = (arr)=>[...new Set(arr)];
+  const CATEGORIES = unique(MATERIALS.map(m=>m.category));
+  const LEVELS = unique(MATERIALS.map(m=>m.level));
+  const TYPES = unique(MATERIALS.map(m=>m.type));
+
+  function renderFilterPills(){
+    const filters = $('#filters');
+    filters.innerHTML = '';
+    const groups = [
+      {label:'Category', items:CATEGORIES, set:state.cats},
+      {label:'Level', items:LEVELS, set:state.levels},
+      {label:'Type', items:TYPES, set:state.types},
+    ];
+    groups.forEach(g=>{
+      const lbl = document.createElement('span'); lbl.className='badge'; lbl.innerHTML=`<i class="fa-solid fa-filter"></i> ${g.label}`; filters.appendChild(lbl);
+      g.items.forEach(it=>{
+        const span = document.createElement('button');
+        span.className = 'pill';
+        span.textContent = it;
+        span.addEventListener('click', ()=>{ g.set.has(it)? g.set.delete(it) : g.set.add(it); span.classList.toggle('active'); renderCards(); });
+        filters.appendChild(span);
+      });
+    });
+  }
+
+  function cardHTML(m){
+    const active = state.bookmarks.has(m.id) ? 'active' : '';
+    const tags = m.tags.map(t=>`<span class="badge">#${t}</span>`).join(' ');
+    return `<article class="card" data-id="${m.id}" data-category="${m.category}" data-level="${m.level}" data-type="${m.type}">
+      <button class="bookmark ${active}" title="Bookmark"><i class="fa-solid fa-bookmark"></i></button>
+      <h4 style="margin:.2rem 2.2rem .2rem .2rem">${m.title}</h4>
+      <div class="meta"><span class="badge"><i class="fa-solid fa-layer-group"></i> ${m.category}</span>
+        <span class="badge"><i class="fa-solid fa-signal"></i> ${m.level}</span>
+        <span class="badge"><i class="fa-regular fa-file-lines"></i> ${m.type}</span>
+        <span class="badge"><i class="fa-regular fa-clock"></i> ${m.duration}</span></div>
+      <div style="display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.3rem">${tags}</div>
+      <div class="card-actions">
+        <a class="btn" href="${m.link}" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open</a>
+        <a class="btn ghost" href="${m.link}" download><i class="fa-solid fa-download"></i> Download</a>
+      </div>
+    </article>`;
+  }
+
+  function matchesFilters(m){
+    const q = state.q.toLowerCase();
+    const qOk = !q || [m.title, m.tags.join(' '), m.category, m.type, m.level].join(' ').toLowerCase().includes(q);
+    const cOk = state.cats.size===0 || state.cats.has(m.category);
+    const lOk = state.levels.size===0 || state.levels.has(m.level);
+    const tOk = state.types.size===0 || state.types.has(m.type);
+    return qOk && cOk && lOk && tOk;
+  }
+
+  function renderCards(){
+    const el = $('#cards');
+    const list = MATERIALS.filter(matchesFilters);
+    $('#resultCount').textContent = String(list.length);
+    el.innerHTML = list.map(cardHTML).join('');
+    // attach bookmark handlers
+    $$('.bookmark', el).forEach(btn=>btn.addEventListener('click', ()=>{
+      const id = btn.closest('.card').dataset.id;
+      if(state.bookmarks.has(id)){ state.bookmarks.delete(id); btn.classList.remove('active'); }
+      else { state.bookmarks.add(id); btn.classList.add('active'); }
+      localStorage.setItem('cbn_bms', JSON.stringify([...state.bookmarks]));
+      renderBookmarks();
+    }));
+  }
+
+  // Search input
+  $('#q').addEventListener('input', e=>{ state.q = e.target.value.trim(); renderCards(); });
+  $('#clearFilters').addEventListener('click', ()=>{ state.q=''; $('#q').value=''; state.cats.clear(); state.levels.clear(); state.types.clear(); renderFilterPills(); renderCards(); });
+
+  // =====================
+  // BOOKMARKS
+  // =====================
+  function renderBookmarks(){
+    const el = $('#bmGrid');
+    const ids = [...state.bookmarks];
+    const rows = MATERIALS.filter(m=>ids.includes(m.id));
+    el.innerHTML = rows.length? rows.map(cardHTML).join('') : `<div class="card"><p style="color:var(--muted); margin:0">No bookmarks yet. Click the <i class='fa-solid fa-bookmark'></i> on any material to save it here.</p></div>`;
+  }
+  $('#clearBms').addEventListener('click', ()=>{ if(confirm('Clear all bookmarks?')){ state.bookmarks.clear(); localStorage.setItem('cbn_bms','[]'); renderBookmarks(); renderCards(); } });
+
+  // =====================
+  // TRACKS / SYLLABUS
+  // =====================
+  function renderTracks(){
+    const sel = $('#trackSelect');
+    sel.innerHTML = Object.keys(TRACKS).map((k,i)=>`<option value="${k}" ${i===0?'selected':''}>${k}</option>`).join('');
+    sel.addEventListener('change', ()=> renderModules(sel.value));
+    renderModules(sel.value);
+  }
+  function renderModules(name){
+    const holder = $('#modules');
+    const modules = TRACKS[name];
+    holder.innerHTML = '';
+    const key = `cbn_progress_${name}`;
+    const progress = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+    modules.forEach(mod=>{
+      const div = document.createElement('div');
+      div.className = 'module';
+      div.innerHTML = `<h4>${mod.title}</h4>`;
+      const ul = document.createElement('ul');
+      mod.items.forEach((it,idx)=>{
+        const id = `${mod.id}_${idx}`;
+        const li = document.createElement('li');
+        const cb = document.createElement('input'); cb.type='checkbox'; cb.style.marginRight='.5rem'; cb.checked = progress.has(id);
+        cb.addEventListener('change', ()=>{
+          if(cb.checked) progress.add(id); else progress.delete(id);
+          localStorage.setItem(key, JSON.stringify([...progress]));
+        });
+        li.appendChild(cb); li.append(it); ul.appendChild(li);
+      });
+      div.appendChild(ul); holder.appendChild(div);
+    });
+  }
+
+  // =====================
+  // INIT
+  // =====================
+  renderFilterPills();
+  renderCards();
+  renderBookmarks();
+  renderTracks();
+  </script>
+</body>
+</html>
