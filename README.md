@@ -1,4 +1,4 @@
-# 🌐 CoditByNeha — Minimal Front Page
+# 🌐 CoditByNeha — Minimal Front Pag
 
 A clean, fast, and responsive landing page for **CoditByNeha**, a study materials hub covering programming languages, frameworks, backend, and graphics concepts.
 
