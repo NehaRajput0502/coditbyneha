@@ -1,4 +1,6 @@
 #✅ Day 1 Done: Python installed, first program running!
+#✅ Day 2 Done: Comfortable with variables and basic math!
+#✅ Day 3 Done: Can handle lists and string operations!
 # ##Practice
 print("Hello World!")
 name = input("What's your name? ")
