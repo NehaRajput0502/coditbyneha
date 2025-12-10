@@ -54,6 +54,27 @@ else:
 num=int(input("Enter the number:"))
 if num>=0:
     print("Positive number")
+
+#Check if a user has balance to buy an item
+amount= float(input("Enter the amount of items:"))
+balance= float(input("Enter the balance remaining:"))
+if amount<= balance:
+    print("Purchase the items")
+else:
+    print("Not purchase")
+
+#Suggest a mode of transport based on distance
+distance= float(input("Enter the distance:"))
+if distance<= 2:
+    print("Walk")
+elif distance<=5:
+    print("Use bicycle")
+elif distance<=15:
+    print("Use bike")    
+elif distance<=400:
+    print("Use Car or Bus")
+else:
+    print("Use train or aeroplane")
         
 #Loops
 n = int(input())
