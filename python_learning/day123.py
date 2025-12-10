@@ -50,12 +50,12 @@ if age >= 18:
 else:
     print("You are not eligible to vote yet.")
 
-#Check if a number is positive
+#Check if a number is positive  ---Using If
 num=int(input("Enter the number:"))
 if num>=0:
     print("Positive number")
 
-#Check if a user has balance to buy an item
+#Check if a user has balance to buy an item ---Using If-Else
 amount= float(input("Enter the amount of items:"))
 balance= float(input("Enter the balance remaining:"))
 if amount<= balance:
@@ -63,7 +63,7 @@ if amount<= balance:
 else:
     print("Not purchase")
 
-#Suggest a mode of transport based on distance
+#Suggest a mode of transport based on distance  ---Using If-Elif-Else
 distance= float(input("Enter the distance:"))
 if distance<= 2:
     print("Walk")
@@ -76,6 +76,23 @@ elif distance<=400:
 else:
     print("Use train or aeroplane")
         
+#Login with username and password ---Using Nested If-Else
+username=input("Enter the username:")
+password=input("Enter the password:")
+
+if username=="admin":
+    if password=="12345":
+        print("Access Granted")
+    else:
+        print("Password incorrect")
+else:
+    print("Incorrect user password")
+
+#Check if number is even --Using Ternary Operator
+num=int(input("Enter the number"))
+print("Even" if num % 2 == 0 else "Odd")
+
+
 #Loops
 n = int(input())
 for i in range(n):
