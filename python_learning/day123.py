@@ -42,13 +42,19 @@ elif n % 2 == 0 and 6 <= n <= 20:
     print("Weird")  
 elif n % 2 == 0 and n > 20:
     print("Not Weird")
-
+##Practical Solved Problems of Conditional Statements
 #vote or not
 age = int(input("Enter your age: "))
 if age >= 18:
     print("You are eligible to vote.")
 else:
     print("You are not eligible to vote yet.")
+
+#Check if a number is positive
+num=int(input("Enter the number:"))
+if num>=0:
+    print("Positive number")
+        
 #Loops
 n = int(input())
 for i in range(n):
