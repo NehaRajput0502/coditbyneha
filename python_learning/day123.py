@@ -9,9 +9,14 @@ print(f"Nice to meet you, {name}!")
 #Say "Hello, World!" With Python
 print("Hello, World!")
 
+#Getting List of all Python keywords
+import keyword
+print("The list of keywords are : ")
+print(keyword.kwlist)
+
 #Arithmetic Operators
-a = int(input())
-b = int(input())
+a = int(input("Add first number: "))
+b = int(input("Add second number: "))
 print(a + b)
 print(a - b)
 print(a * b)
@@ -38,6 +43,12 @@ elif n % 2 == 0 and 6 <= n <= 20:
 elif n % 2 == 0 and n > 20:
     print("Not Weird")
 
+#vote or not
+age = int(input("Enter your age: "))
+if age >= 18:
+    print("You are eligible to vote.")
+else:
+    print("You are not eligible to vote yet.")
 #Loops
 n = int(input())
 for i in range(n):
@@ -58,61 +69,7 @@ def is_leap(year):
 year = int(input())
 print(is_leap(year))
 
-#List Comprehensions
-x = int(input())
-y = int(input())
-z = int(input())   
-n = int(input())
-result = [[i, j, k] for i in range(x + 1) for j in range(y + 1) for k in range(z + 1) if (i + j + k) != n]
-print(result)
-#Find the Runner-Up Score!
-n = int(input())
-arr = list(map(int, input().split()))
-unique_scores = list(set(arr))
-unique_scores.sort()
-print(unique_scores[-2])
-#Nested Lists
-records = []    
-for _ in range(int(input())):
-    name = input()
-    score = float(input())
-    records.append([name, score])
-records.sort(key=lambda x: x[1])
-second_lowest_score = sorted(set([score for name, score in records]))[1]
-for name, score in records:
-    if score == second_lowest_score:
-        print(name)
-
-#Finding the percentage
-n = int(input())
-student_marks = {}
-for _ in range(n):
-    name, *line = input().split()
-    scores = list(map(float, line))
-    student_marks[name] = scores
-query_name = input()
-average = sum(student_marks[query_name]) / len(student_marks[query_name])
-print(f"{average:.2f}")
-#Lists
-if __name__ == '__main__':
-    N = int(input())
-    lst = []
-    for _ in range(N):
-        command = input().split()
-        if command[0] == "insert":
-            lst.insert(int(command[1]), int(command[2]))
-        elif command[0] == "print":
-            print(lst)
-        elif command[0] == "remove":
-            lst.remove(int(command[1]))
-        elif command[0] == "append":
-            lst.append(int(command[1]))
-        elif command[0] == "sort":
-            lst.sort()
-        elif command[0] == "pop":
-            lst.pop()
-        elif command[0] == "reverse":
-            lst.reverse()   
+  
 
 # Finding largest number among three numbers
 x = int(input("Enter first number: "))  
@@ -125,4 +82,44 @@ elif (y >= x) and (y >= z):
 else:
     largest = z
 print("The largest number is:", largest)
-            
+
+# Swapping of numbers
+a,b=5,10    
+print("Before swapping: a =",a,"b =",b)
+a,b=b,a
+print("After swapping: a =",a,"b =",b)
+
+#Problems Python Basics
+
+#1.Input in python
+"""The string Hello is printed as it is.
+   The integer 20 is increased by 10 and results in 30.
+   The floating-point number 5.5 is multiplied by 10 and results in 55.0."""
+# Take string input and print it
+s = input("Enter a string: ")
+print(s)
+
+# Take integer input, add 10 and print
+n = int(input("Enter an integer: "))
+print(n + 10)
+
+# Take float input, multiply by 10 and print
+f = float(input("Enter a floating-point number: "))
+print(f * 10)
+
+#2.Multi Printing
+##a is printed n=5 times in a single line without space between them.
+a = input()
+n = int(input())
+print(a*n)
+
+#3.Type Conversion
+##The integer value of 10.23 is 10
+
+d = float(input())   # read double value
+print(int(d))        # typecast to integer and print
+
+#4.TypeCast and Double It
+##Typecast "5" to int and then double it 5 * 2 = 10
+num = int(input())
+print(num*2)
