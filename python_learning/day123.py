@@ -92,7 +92,33 @@ else:
 num=int(input("Enter the number"))
 print("Even" if num % 2 == 0 else "Odd")
 
+#Assign grade --Matching Case
+grade = input("Enter your grade (A/B/C):").upper() #.upper() is used to convert whatever the user types into uppercase letters.
 
+match grade:
+    case 'A':
+        print("Excellent")
+    case 'B':
+        print("Good")
+    case 'C':
+        print("Average")
+    case _:
+        print("Fail")
+
+# Activity Suggestion based on weather condition
+weather=input("Enter the weather(sunny/rainy/cloudy/snowy)").lower()
+
+match weather:
+    case "sunny":
+        print("Sunny weather")
+    case "rainy":
+        print("Rainy weather")
+    case "cloudy":
+        print("Cloudy weather")
+    case "snowy":
+        print("Snow weather")
+    case _:   #In Python’s match syntax, there is no default: keyword like in C or Java. Instead, we use case _:
+        print("Incorrect")
 #Loops
 n = int(input())
 for i in range(n):
