@@ -91,6 +91,9 @@ else:
 #Check if number is even --Using Ternary Operator
 num=int(input("Enter the number"))
 print("Even" if num % 2 == 0 else "Odd")
+           #or
+def checkOddEven(x):
+    return "Even" if x % 2 == 0 else "Odd"
 
 #Assign grade --Matching Case
 grade = input("Enter your grade (A/B/C):").upper() #.upper() is used to convert whatever the user types into uppercase letters.
