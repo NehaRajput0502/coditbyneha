@@ -95,6 +95,21 @@ print("Even" if num % 2 == 0 else "Odd")
 def checkOddEven(x):
     return "Even" if x % 2 == 0 else "Odd"
 
+#Given two integer variables a and b, and a boolean variable flag. The task is to check the status and return accordingly.
+class Solution:
+    def checkStatus(self, a, b, flag):
+        # Condition 1: Exactly one of a or b is non-negative AND flag is False
+        if flag == False and ((a >= 0) ^ (b >= 0)):
+            return True
+        
+        # Condition 2: Both are negative AND flag is True
+        if flag == True and a < 0 and b < 0:
+            return True
+        
+        # Otherwise
+        return False
+
+
 #Assign grade --Matching Case
 grade = input("Enter your grade (A/B/C):").upper() #.upper() is used to convert whatever the user types into uppercase letters.
 
@@ -126,6 +141,17 @@ match weather:
 n = int(input())
 for i in range(n):
     print(i * i)
+
+#Iterating by Index of Sequences
+li = ["geeks", "for", "geeks"]
+for index in range(len(li)):
+    print(li[index])
+
+#Nested Loops
+for i in range(1, 5):
+    for j in range(i):
+        print(i, end=' ')
+    print()
 
 #Print Function
 n = int(input())
