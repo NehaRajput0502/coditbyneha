@@ -40,6 +40,25 @@ n = int(input())
 for i in range(n):
     print(i * i)
 
+#1
+for i in range(4,50,6):
+    print(i)
+#2
+for i in range(4):
+    for j in range(2):
+        print(i, j)
+#3.1
+for i in range(5):
+    for j in range(2):
+        for k in range(3):
+            print(i, j, k)
+
+#3.2
+for i in range(5,6,2):
+    for j in range(2):
+        for k in range(3):
+            print(i, j, k)
+
 #Print Function
 n = int(input())
 for i in range(1, n + 1):
