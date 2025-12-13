@@ -221,4 +221,4 @@ print(int(d))        # typecast to integer and print
 #4.TypeCast and Double It
 ##Typecast "5" to int and then double it 5 * 2 = 10
 num = int(input())
-print(num*2
+print(num*2)
