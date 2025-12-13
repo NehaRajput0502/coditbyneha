@@ -59,6 +59,28 @@ for i in range(5,6,2):
         for k in range(3):
             print(i, j, k)
 
+#Arrays
+def arrays(arr):
+    return numpy.array(arr[::-1], float)
+#:: is slice notation example
+#-1 means reverse the array
+arr = input().strip().split(' ')    
+result = arrays(arr)
+print(result)
+#Exaples of Slice Notation
+a=[10,20,30,40,50,60,70,80,90,100]
+print(a[::])
+print(a[3::])
+print(a[::1])
+print(a[::5])
+print(a[:4:])
+print(a[2:8:2])
+print(a[::-1])
+print(a[::-5])
+print(a[-3::])
+print(a[-3::-2])
+print(a[-10:-2:-5])
+
 #Print Function
 n = int(input())
 for i in range(1, n + 1):
