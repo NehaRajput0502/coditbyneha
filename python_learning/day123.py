@@ -206,7 +206,7 @@ print(n + 10)
 f = float(input("Enter a floating-point number: "))
 print(f * 10)
 
-#2.Multi Printing
+#2.Multi Printings
 ##a is printed n=5 times in a single line without space between them.
 a = input()
 n = int(input())
@@ -221,4 +221,4 @@ print(int(d))        # typecast to integer and print
 #4.TypeCast and Double It
 ##Typecast "5" to int and then double it 5 * 2 = 10
 num = int(input())
-print(num*2)
+print(num*2
