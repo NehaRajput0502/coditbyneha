@@ -79,7 +79,7 @@ print(a[::-1])
 print(a[::-5])
 print(a[-3::])
 print(a[-3::-2])
-print(a[-10:-2:-5])
+print(a[-10:-2:-5]
 
 #Print Function
 n = int(input())
