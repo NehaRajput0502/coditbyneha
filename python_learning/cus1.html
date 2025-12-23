@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Valued Customers - Duke Jia</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    :root{
+      --pur:#045285;
+      --pur2:#833ade;
+      --bg:#FAF9F6;
+      --text:#2D3436;
+      --muted:#5f6970;
+      --muted2:#6f7a82;
+      --lgray:#E8EDF2;
+      --primary:var(--pur2);
+      --accent:#A29BFE;
+      --card-shadow:0 10px 30px rgba(0,0,0,.06);
+      --card-hover:0 16px 40px rgba(0,0,0,.10);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
+    .container{margin:0 auto;padding:0 40px}
+    @media (max-width:1024px){.container{padding:0 24px}}
+    @media (max-width:480px){.container{padding:0 16px}}
+
+    /* Header */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(250, 249, 246, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--lgray);
+    }
+    .container.nav {
+      display: flex; justify-content: space-between; align-items: center;
+      height: 72px;
+    }
+    .nav-center {display:flex;gap:28px;align-items:center}
+    .nav-center a{color:var(--text);font-weight:600}
+    .nav-center a:hover{color:var(--pur2)}
+    .btn-quote{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;
+      font-weight:700;background:linear-gradient(90deg,var(--accent),var(--pur2));
+      color:#2a1e00; box-shadow: var(--card-shadow);
+    }
+    .menu-toggle{display:none;background:none;border:none;color:var(--pur);font-size:1.5rem;cursor:pointer;padding:8px;border-radius:6px}
+    @media (max-width: 780px) {
+      .nav-center{
+        position:fixed;top:72px;left:0;right:0;
+        background: rgba(250,249,246,.98);
+        flex-direction:column;padding:20px 24px;gap:0;
+        transform: translateY(-100%); opacity:0; visibility:hidden;
+        transition:.3s;border-bottom:1px solid var(--lgray);
+      }
+      .nav-center.open{transform:translateY(0);opacity:1;visibility:visible}
+      .nav-center a{padding:16px 0;width:100%;border-bottom:1px solid #eee}
+      .nav-center a:last-child{border-bottom:none}
+      .menu-toggle{display:block}
+      .btn-quote{width:100%;justify-content:center}
+    }
+
+    /* Hero */
+    .hero{
+      background-image: radial-gradient(1100px 520px at 80% -10%, rgba(168, 139, 255, 0.18), transparent 60%),
+                       radial-gradient(900px 450px at -10% 90%, rgba(4, 82, 133, 0.12), transparent 60%);
+      padding: 60px 0 20px;
+    }
+    .headline{
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      line-height: 1.05;
+      margin: 0 0 1rem;
+      font-weight: 900;
+      color: var(--pur);
+    }
+    .headline .accent{
+      color: transparent;
+      background: linear-gradient(90deg, var(--pur), var(--pur2));
+      -webkit-background-clip: text;
+      background-clip:text;
+    }
+    .sub{font-size:1.1rem;line-height:1.8;color:#4a5258;margin:0;max-width:100ch}
+
+    /* Filters */
+    .filters-bar{display:flex;gap:16px;align-items:flex-end;margin:10px auto 10px;flex-wrap:wrap}
+    .filter-group{display:flex;flex-direction:column;gap:6px;min-width:180px}
+    .filter-group.wide{flex:1;min-width:240px}
+    .filter-group label{font-size:.85rem;font-weight:600;color:var(--muted2)}
+    .filter-group select,.filter-group input{
+      padding:8px 10px;border-radius:10px;border:1px solid var(--lgray);
+      font:inherit;outline:none;background:#fff;
+    }
+    .view-toggle{display:flex;margin-left:auto;gap:0;align-items:center}
+    .view-toggle button{
+      padding:10px 18px;border:1px solid var(--lgray);background:#fff;color:var(--text);
+      font-weight:600;cursor:pointer;height:38px
+    }
+    .view-toggle button:first-child{border-radius:10px 0 0 10px}
+    .view-toggle button:last-child{border-radius:0 10px 10px 0}
+    .view-toggle button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    @media (max-width:640px){
+      .filters-bar{flex-direction:column;align-items:stretch}
+      .view-toggle{margin-left:0;width:100%}
+      .view-toggle button{width:100%;border-radius:10px!important;margin-bottom:10px}
+    }
+
+    /* Layout */
+    .customers-section{padding:20px 0 60px}
+    .customers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+    .map-section{display:none;padding:20px 0 60px}
+    .map-section.active{display:block}
+    .map-layout{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
+    .map-container{height:500px;border-radius:20px;overflow:hidden;box-shadow:var(--card-shadow);border:1px solid var(--lgray)}
+    .cards-side{
+      display:flex;flex-direction:column;gap:14px;min-height:520px;height:100%;
+      background:#fff;border:1px solid var(--lgray);border-radius:20px;padding:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.06);
+    }
+    .cards-title{margin:0;font-size:1.4rem;font-weight:800;color:var(--pur)}
+    .cards-grid{display:grid;grid-template-columns:1fr;gap:16px;max-height:460px;overflow-y:auto;padding-right:10px}
+    .state-selector{display:flex;flex-wrap:wrap;gap:10px}
+    .state-btn{padding:8px 16px;border:1px solid var(--lgray);border-radius:20px;background:#fff;color:var(--text);font-weight:600;cursor:pointer}
+    .state-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+    @media (max-width:1024px){
+      .map-layout{grid-template-columns:1fr;gap:20px}
+      .cards-grid{max-height:none}
+    }
+
+    /* Card */
+    .customer-card{
+      background:#fff;border:1px solid var(--lgray);border-radius:20px;
+      overflow:hidden;transition:.35s;box-shadow:var(--card-shadow);
+      display:flex;flex-direction:column;height:100%;
+    }
+    .customer-card:hover{transform:translateY(-6px);box-shadow:var(--card-hover);border-color:rgba(4,82,133,.2)}
+    .customer-header{padding:20px 20px 0;display:flex;align-items:flex-start;gap:12px}
+    .customer-logo{
+      width:60px;height:60px;border-radius:12px;
+      background:linear-gradient(135deg,var(--primary),var(--accent));
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.2rem;flex-shrink:0;
+    }
+    .customer-info{flex:1}
+    .customer-name-row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+    .customer-name{
+      font-size:1.15rem;font-weight:800;margin:0;color:var(--pur);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      max-width: 230px;
+    }
+    .eye-btn{
+      width:36px;height:36px;border-radius:10px;border:1px solid var(--lgray);
+      background:#fff;color:var(--muted);display:grid;place-items:center;
+      cursor:pointer;transition:.2s;
+    }
+    .eye-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.05)}
+    .customer-location{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem;margin:8px 0 8px}
+    .customer-body{padding:16px 20px;flex:1}
+    .customer-details{display:flex;flex-direction:column;gap:10px}
+    .detail-item{display:flex;align-items:center;gap:8px;color:var(--muted2);font-size:.9rem}
+    .detail-item i{width:16px;color:var(--pur)}
+    .customer-footer{
+      padding:16px 20px 20px;border-top:1px solid var(--lgray);
+      display:flex;justify-content:space-between;align-items:center;gap:10px;
+    }
+    .customer-model{
+      display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:20px;
+      background:#ffebeb;color:#FF0000;font-weight:700;font-size:.85rem;cursor:pointer;
+    }
+    .details-btn{
+      padding:8px 14px;border-radius:10px;border:1px solid var(--lgray);
+      background:#fff;color:var(--text);font-weight:600;cursor:pointer;transition:.2s;
+      display:flex;align-items:center;gap:6px;
+    }
+    .details-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+    .empty-state i{font-size:3rem;margin-bottom:16px;opacity:.6}
+
+    /* Modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;align-items:center;justify-content:center}
+    .modal.active{display:flex}
+    .modal-content{
+      background:#fff;border-radius:20px;width:92%;max-width:720px;max-height:92vh;overflow:auto;
+      box-shadow:0 20px 60px rgba(0,0,0,.2);
+    }
+    .modal-header{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--lgray)}
+    .modal-title{margin:0;font-size:1.5rem;font-weight:900;color:var(--pur)}
+    .modal-close{background:none;border:none;font-size:1.6rem;color:var(--muted);cursor:pointer}
+    .modal-body{padding:22px}
+    .modal-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .modal-btn{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;
+      border:1px solid var(--lgray);background:#fff;color:var(--text);font-weight:700;cursor:pointer;
+    }
+    .modal-btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .modal-btn.primary:hover{background:var(--accent);border-color:var(--accent)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .form-grid input{
+      padding:10px;border:1px solid var(--lgray);border-radius:10px;font:inherit;outline:none;background:#fff;
+    }
+    .form-grid .full{grid-column:1/-1}
+    .helper{color:var(--muted2);font-size:13px;line-height:1.5}
+    @media (max-width:640px){
+      .form-grid{grid-template-columns:1fr}
+      .customer-name{max-width: 200px;}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Duke Jia Home">
+        <span><img src="images/dukejia.png" width="190" height="55" alt="DUKEJIA" loading="lazy"></span>
+      </a>
+      <button class="menu-toggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
+      <nav class="nav-center" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="Products-Details.html">Products</a>
+        <a href="Customers-Details.html" style="color: var(--pur2); font-weight:700;">Our Customers</a>
+        <a href="Contact.html">Contact</a>
+        <a class="btn-quote"
+           href="https://wa.me/919350513789?text=Hi%20Duke%20Jia%20Team%2C%20I%27m%20interested%20in%20your%20machines.%20Please%20share%20pricing%20%26%20availability."
+           target="_blank" rel="noopener">
+          <i class="fa-solid fa-phone"></i> Get Quote
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <h1 class="headline">Our <span class="accent">Valued Customers</span></h1>
+      <p class="sub">Discover textile manufacturers across India who trust Duke Jia’s technology.</p>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <div class="container filters-bar">
+    <div class="filter-group">
+      <label for="areaFilter">Area</label>
+      <select id="areaFilter">
+        <option value="all">All Areas</option>
+      </select>
+    </div>
+    <div class="filter-group wide">
+      <label for="customerSearch">Customer / City / Model</label>
+      <input type="text" id="customerSearch" placeholder="Search by customer, city or machine model..." />
+    </div>
+    <div class="view-toggle">
+      <button id="mapViewBtn" class="active"><i class="fa-solid fa-grip"></i> Map View</button>
+      <button id="cardViewBtn"><i class="fa-solid fa-map"></i> Card View</button>
+    </div>
+  </div>
+
+  <!-- Cards View -->
+  <section class="customers-section" id="customersSection">
+    <div class="container">
+      <div class="customers-grid" id="customer-gallery"></div>
+    </div>
+  </section>
+
+  <!-- Map View -->
+  <section class="map-section" id="mapSection">
+    <div class="container">
+      <div class="map-layout">
+        <div class="map-side">
+          <div class="state-selector" id="stateSelector">
+            <button class="state-btn active" data-region="all">All Regions</button>
+            <button class="state-btn" data-region="NCR">NCR</button>
+            <button class="state-btn" data-region="East">East India</button>
+            <button class="state-btn" data-region="North">North India</button>
+            <button class="state-btn" data-region="West">West India</button>
+            <button class="state-btn" data-region="South">South India</button>
+          </div>
+          <div class="map-container" id="map" style="position: sticky; top: 90px;"></div>
+        </div>
+
+        <div class="cards-side">
+          <h3 class="cards-title">Customers in <span id="currentRegion">All Regions</span></h3>
+          <div class="cards-grid" id="map-customer-gallery"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       MODAL 1: BASIC DETAILS
+  ========================== -->
+  <div class="modal" id="leadModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Request Access</h2>
+        <button class="modal-close" id="leadClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="helper" style="margin-top:0">
+          Fill your basic details. After you click <b>Unlock & Open WhatsApp</b>, you will receive a message and we will share username/password in <b>15–20 minutes</b>.
+        </p>
+
+        <form id="leadForm" autocomplete="on">
+          <input type="hidden" id="lf_customerId">
+          <input type="hidden" id="lf_customerName">
+
+          <div class="form-grid">
+            <input id="lf_userName" placeholder="Your Name *" required>
+            <input id="lf_mobile" placeholder="Mobile No. *" required inputmode="numeric">
+            <input id="lf_company" class="full" placeholder="Company Name *" required>
+            <input id="lf_email" class="full" placeholder="Email (optional)" type="email">
+          </div>
+
+          <label class="helper" style="display:flex;gap:10px;align-items:flex-start;margin-top:12px;">
+            <input type="checkbox" id="lf_consent" required>
+            <span>I agree DukeJia / HCA may contact me regarding my enquiry.</span>
+          </label>
+
+          <div class="modal-actions">
+            <button class="modal-btn primary" id="lf_submit" type="submit">
+              <i class="fa-brands fa-whatsapp"></i> Unlock & Open WhatsApp
+            </button>
+            <button class="modal-btn" id="lf_cancel" type="button">Cancel</button>
+          </div>
+
+          <div id="lf_msg" class="helper" style="margin-top:10px;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       MODAL 2: ENTER USER/PASS
+  ========================== -->
+  <div class="modal" id="accessModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Enter Username & Password</h2>
+        <button class="modal-close" id="accessClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="helper" style="margin-top:0">
+          If you received username/password on WhatsApp, enter here. If correct, customer names will be visible for <b>20 minutes</b>.
+        </p>
+
+        <form id="accessForm">
+          <div class="form-grid">
+            <input id="acc_user" class="full" placeholder="Username *" required>
+            <input id="acc_pass" class="full" placeholder="Password *" type="password" required>
+          </div>
+
+          <div class="modal-actions">
+            <button class="modal-btn primary" type="submit">
+              <i class="fa-solid fa-lock-open"></i> Verify & Show Names
+            </button>
+            <button class="modal-btn" id="accessCancel" type="button">Cancel</button>
+          </div>
+
+          <div id="acc_msg" class="helper" style="margin-top:10px;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+      DETAILS MODAL (optional)
+  ========================== -->
+  <div class="modal" id="customerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalCustomerName">Customer Details</h2>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="helper" id="lockedHint" style="display:none;margin-bottom:14px;">
+          Customer name is hidden. Click the <b>eye</b> icon on the card to request access.
+        </div>
+
+        <div class="form-grid">
+          <input id="modalName" class="full" disabled>
+          <input id="modalLocation" class="full" disabled>
+          <input id="modalModel" class="full" disabled>
+          <input id="modalYear" class="full" disabled>
+        </div>
+
+        <div class="modal-actions" style="margin-top:16px;">
+          <a href="https://wa.me/919350513789" target="_blank" class="modal-btn primary">
+            <i class="fa-brands fa-whatsapp"></i> Contact on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================
+       CONFIG
+    ========================== */
+
+    // Your leads-to-sheet Apps Script (same as you already use)
+    const APPS_SCRIPT_LEAD_URL = "https://script.google.com/macros/s/AKfycbzOKkU2SvoTI9FbNVCI_aDmwA_sabwwbGWI51B9sNqTYmWv6I2-xz4fbWzMlQyblvO7/exec";
+
+    // NEW: verification endpoint (Apps Script) - you will deploy this (code below)
+    const APPS_SCRIPT_VERIFY_URL = "PASTE_YOUR_VERIFY_WEBAPP_URL_HERE";
+
+    // WhatsApp number for access request
+    const ADMIN_WA = "919350513789";
+
+    // How long names stay visible after correct login
+    const UNLOCK_MINUTES = 20;
+
+    // Lead "cooldown" so same user doesn't fill form again again
+    const LEAD_EXPIRE_MINUTES = 30;
+    const LEAD_STORAGE_KEY = "dukejia_lead_v1";
+
+    // Unlock token storage
+    const UNLOCK_KEY = "dukejia_unlock_v1";
+
+    /* =========================
+       NAV MOBILE
+    ========================== */
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navCenter = document.querySelector('.nav-center');
+    if (menuToggle && navCenter) {
+      const icon = menuToggle.querySelector("i");
+      menuToggle.addEventListener("click", () => {
+        navCenter.classList.toggle("open");
+        const open = navCenter.classList.contains("open");
+        icon.classList.toggle("fa-xmark", open);
+        icon.classList.toggle("fa-bars", !open);
+      });
+      document.querySelectorAll(".nav-center a").forEach(a => {
+        a.addEventListener("click", () => {
+          navCenter.classList.remove("open");
+          icon.classList.remove("fa-xmark");
+          icon.classList.add("fa-bars");
+        });
+      });
+    }
+
+    /* =========================
+       STATE / DOM
+    ========================== */
+    let CUSTOMERS = [];
+    const gallery = document.getElementById("customer-gallery");
+    const mapGallery = document.getElementById("map-customer-gallery");
+    const mapViewBtn = document.getElementById("mapViewBtn");
+    const cardViewBtn = document.getElementById("cardViewBtn");
+    const customersSection = document.getElementById("customersSection");
+    const mapSection = document.getElementById("mapSection");
+    const stateButtons = document.querySelectorAll(".state-btn");
+    const currentRegion = document.getElementById("currentRegion");
+
+    const areaFilter = document.getElementById("areaFilter");
+    const customerSearch = document.getElementById("customerSearch");
+    let currentArea = "all";
+    let searchQuery = "";
+    let currentMapRegion = "all";
+
+    // Lead modal
+    const leadModal = document.getElementById("leadModal");
+    const leadClose = document.getElementById("leadClose");
+    const leadForm = document.getElementById("leadForm");
+    const lf_msg = document.getElementById("lf_msg");
+    const lf_cancel = document.getElementById("lf_cancel");
+    const lf_submit = document.getElementById("lf_submit");
+    let pendingCustomerId = null;
+
+    // Access modal
+    const accessModal = document.getElementById("accessModal");
+    const accessClose = document.getElementById("accessClose");
+    const accessCancel = document.getElementById("accessCancel");
+    const accessForm = document.getElementById("accessForm");
+    const acc_msg = document.getElementById("acc_msg");
+
+    // Details modal
+    const customerModal = document.getElementById("customerModal");
+    const modalClose = document.getElementById("modalClose");
+    const modalCustomerName = document.getElementById("modalCustomerName");
+    const modalName = document.getElementById("modalName");
+    const modalLocation = document.getElementById("modalLocation");
+    const modalModel = document.getElementById("modalModel");
+    const modalYear = document.getElementById("modalYear");
+    const lockedHint = document.getElementById("lockedHint");
+
+    /* =========================
+       UNLOCK HELPERS
+    ========================== */
+    function setUnlock(minutes){
+      const expiresAt = Date.now() + minutes * 60 * 1000;
+      localStorage.setItem(UNLOCK_KEY, JSON.stringify({ expiresAt }));
+    }
+    function clearUnlock(){
+      localStorage.removeItem(UNLOCK_KEY);
+    }
+    function isUnlocked(){
+      try{
+        const raw = localStorage.getItem(UNLOCK_KEY);
+        if(!raw) return false;
+        const obj = JSON.parse(raw);
+        if(!obj?.expiresAt) return false;
+        if(Date.now() > Number(obj.expiresAt)){
+          clearUnlock();
+          return false;
+        }
+        return true;
+      }catch(e){
+        return false;
+      }
+    }
+
+    function maskName(name=""){
+      if(!name) return "••••••••••••";
+      // keep first letter only
+      const first = name.trim()[0] || "•";
+      return first + "•".repeat(Math.min(14, Math.max(8, name.length-1)));
+    }
+
+    /* =========================
+       LEAD "ONCE" HELPERS
+    ========================== */
+    function getSavedLead(){
+      try{
+        const raw = localStorage.getItem(LEAD_STORAGE_KEY);
+        if(!raw) return null;
+        const obj = JSON.parse(raw);
+        if(!obj?.ts) return null;
+        const ageMs = Date.now() - Number(obj.ts);
+        const maxMs = LEAD_EXPIRE_MINUTES * 60 * 1000;
+        if(ageMs > maxMs){
+          localStorage.removeItem(LEAD_STORAGE_KEY);
+          return null;
+        }
+        return obj;
+      }catch(e){
+        return null;
+      }
+    }
+    function saveLeadOnce(payload){
+      localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify({
+        ts: Date.now(),
+        userName: payload.userName || "",
+        mobile: payload.mobile || "",
+        company: payload.company || "",
+        email: payload.email || ""
+      }));
+    }
+    function shouldSkipLeadForm(){
+      const lead = getSavedLead();
+      return !!(lead && lead.mobile);
+    }
+
+    /* =========================
+       LOAD CUSTOMERS JSON
+    ========================== */
+    async function loadCustomers(){
+      try{
+        const res = await fetch('data/customers.json', { cache: 'no-store' });
+        if(!res.ok) throw new Error("Failed to load customers.json");
+        const data = await res.json();
+        const raw = Array.isArray(data) ? data : (data.customers || []);
+        CUSTOMERS = raw.map(c => ({
+          area: "",
+          ...c,
+          brand: c.brand || "Duke Jia",
+          area: c.area || ""
+        }));
+        initFilterOptions();
+        renderCustomers();
+      }catch(err){
+        console.error(err);
+        gallery.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <h3>Unable to load customers</h3>
+            <p>Please try again later.</p>
+          </div>`;
+      }
+    }
+
+    function initFilterOptions(){
+      const set = new Set();
+      CUSTOMERS.forEach(c => c.area && set.add(c.area));
+      areaFilter.innerHTML = `<option value="all">All Areas</option>`;
+      Array.from(set).sort().forEach(a => {
+        const opt = document.createElement("option");
+        opt.value = a;
+        opt.textContent = a;
+        areaFilter.appendChild(opt);
+      });
+    }
+
+    function getFilteredCustomers(){
+      const q = (searchQuery || "").trim().toLowerCase();
+      return CUSTOMERS.filter(c => {
+        const regionMatch = currentMapRegion === "all" || c.region === currentMapRegion;
+        const areaMatch = currentArea === "all" || (c.area && c.area === currentArea);
+        const searchMatch =
+          !q ||
+          (c.name && c.name.toLowerCase().includes(q)) ||
+          (c.city && c.city.toLowerCase().includes(q)) ||
+          (c.model && c.model.toLowerCase().includes(q));
+        return regionMatch && areaMatch && searchMatch;
+      });
+    }
+
+    function getInitialsSafe(c){
+      // do NOT use customer name initials when locked
+      if(isUnlocked()){
+        return (c.name || "")
+          .split(" ").filter(Boolean).map(w=>w[0]).join("").substring(0,3).toUpperCase() || "CJ";
+      }
+      // safe initials from city
+      return (c.city || "CJ")
+        .split(",")[0].trim()
+        .split(" ").filter(Boolean).map(w=>w[0]).join("").substring(0,2).toUpperCase() || "CJ";
+    }
+
+    /* =========================
+       RENDER CARDS
+    ========================== */
+    function renderCustomers(){
+      const filtered = getFilteredCustomers();
+      currentRegion.textContent = (currentMapRegion === "all") ? "All Regions" : currentMapRegion;
+      renderCustomerCards(gallery, filtered);
+      renderCustomerCards(mapGallery, filtered);
+      if(map) {
+        updateMapMarkers();
+        refreshMapSize();
+      }
+    }
+
+    function renderCustomerCards(container, customers){
+      if(!container) return;
+      container.innerHTML = "";
+
+      if(customers.length === 0){
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-users"></i>
+            <h3>No customers found</h3>
+            <p>Try selecting different filters.</p>
+          </div>`;
+        return;
+      }
+
+      customers.forEach(c => {
+        const showName = isUnlocked();
+        const displayName = showName ? (c.name || "-") : maskName(c.name);
+
+        const card = document.createElement("div");
+        card.className = "customer-card";
+        card.innerHTML = `
+          <div class="customer-header">
+            <div class="customer-logo">${getInitialsSafe(c)}</div>
+            <div class="customer-info">
+              <div class="customer-name-row">
+                <h3 class="customer-name" title="${showName ? c.name : "Hidden"}">${displayName}</h3>
+                <button class="eye-btn" title="Request / Enter Access" data-id="${c.id}">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+              <div class="customer-location"><i class="fas fa-map-marker-alt"></i>${c.city || "-"}</div>
+            </div>
+          </div>
+
+          <div class="customer-body">
+            <div class="customer-details">
+              <div class="detail-item"><i class="fas fa-industry"></i>${c.brand || "Duke Jia"}</div>
+              <div class="detail-item"><i class="fas fa-tag"></i>${c.model || "-"}</div>
+              <div class="detail-item"><i class="fas fa-map"></i>${c.region || "-"}${c.area ? " • " + c.area : ""}</div>
+            </div>
+          </div>
+
+          <div class="customer-footer">
+            <div class="customer-model video-btn" data-video="${c.youtubeId || ""}">
+              <i class="fa-brands fa-youtube"></i> Watch Video
+            </div>
+            <button class="details-btn" data-id="${c.id}">
+              <i class="fa-solid fa-circle-info"></i> Details
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Eye click (your flow)
+      container.querySelectorAll(".eye-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = Number(btn.dataset.id);
+          onEyeClick(id);
+        });
+      });
+
+      // Details
+      container.querySelectorAll(".details-btn").forEach(btn => {
+        btn.addEventListener("click", () => openCustomerDetails(Number(btn.dataset.id)));
+      });
+
+      // Video
+      container.querySelectorAll(".video-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.video;
+          if(!id) return alert("No video available for this customer yet.");
+          window.open(`https://www.youtube.com/watch?v=${id}`, "_blank", "noopener");
+        });
+      });
+    }
+
+    function onEyeClick(customerId){
+      pendingCustomerId = Number(customerId);
+
+      // If already unlocked -> just re-render (names visible)
+      if(isUnlocked()){
+        renderCustomers();
+        return;
+      }
+
+      // If lead already submitted recently -> show access modal directly
+      if(shouldSkipLeadForm()){
+        openAccessModal();
+        return;
+      }
+
+      // Else open lead form first
+      openLeadForm(customerId);
+    }
+
+    /* =========================
+       DETAILS MODAL
+    ========================== */
+    function openCustomerDetails(id){
+      const c = CUSTOMERS.find(x => Number(x.id) === Number(id));
+      if(!c) return;
+
+      const unlocked = isUnlocked();
+      lockedHint.style.display = unlocked ? "none" : "block";
+
+      modalCustomerName.textContent = unlocked ? (c.name || "Customer Details") : "Customer Details (Hidden)";
+      modalName.value = unlocked ? (c.name || "-") : maskName(c.name);
+      modalLocation.value = c.city || "-";
+      modalModel.value = c.model || "-";
+      modalYear.value = c.year || "-";
+
+      customerModal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+    function closeCustomerDetails(){
+      customerModal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    /* =========================
+       VIEW TOGGLE
+    ========================== */
+    function switchView(v){
+      if(v === "card"){
+        mapSection.style.display = "none";
+        customersSection.style.display = "block";
+        cardViewBtn.classList.add("active");
+        mapViewBtn.classList.remove("active");
+      } else {
+        customersSection.style.display = "none";
+        mapSection.style.display = "block";
+        mapViewBtn.classList.add("active");
+        cardViewBtn.classList.remove("active");
+        if(!map) initMap();
+        refreshMapSize();
+      }
+    }
+    mapViewBtn.addEventListener("click", () => switchView("map"));
+    cardViewBtn.addEventListener("click", () => switchView("card"));
+
+    stateButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentMapRegion = btn.dataset.region;
+        stateButtons.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        renderCustomers();
+      });
+    });
+
+    areaFilter.addEventListener("change", e => { currentArea = e.target.value; renderCustomers(); });
+    customerSearch.addEventListener("input", e => { searchQuery = e.target.value; renderCustomers(); });
+
+    modalClose.addEventListener("click", closeCustomerDetails);
+    customerModal.addEventListener("click", e => { if(e.target === customerModal) closeCustomerDetails(); });
+    document.addEventListener("keydown", e => { if(e.key==="Escape"){ closeCustomerDetails(); closeLeadForm(); closeAccessModal(); } });
+
+    /* =========================
+       LEAD MODAL OPEN/CLOSE
+    ========================== */
+    function openLeadForm(customerId){
+      const cust = CUSTOMERS.find(x => Number(x.id) === Number(customerId));
+
+      document.getElementById("lf_customerId").value = String(customerId || "");
+      document.getElementById("lf_customerName").value = cust ? (cust.name || "") : "";
+
+      lf_msg.textContent = "";
+      leadForm.reset();
+
+      // restore hidden after reset
+      document.getElementById("lf_customerId").value = String(customerId || "");
+      document.getElementById("lf_customerName").value = cust ? (cust.name || "") : "";
+
+      leadModal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+    function closeLeadForm(){
+      leadModal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+    leadClose.addEventListener("click", closeLeadForm);
+    lf_cancel.addEventListener("click", closeLeadForm);
+    leadModal.addEventListener("click", e => { if(e.target === leadModal) closeLeadForm(); });
+
+    /* =========================
+       LEAD SUBMIT: save -> WhatsApp -> alert
+    ========================== */
+    leadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const mobile = document.getElementById("lf_mobile").value.trim();
+      if(!/^\d{10}$/.test(mobile)){
+        lf_msg.textContent = "Please enter a valid 10-digit mobile number.";
+        return;
+      }
+      if(!document.getElementById("lf_consent").checked){
+        lf_msg.textContent = "Please tick consent.";
+        return;
+      }
+
+      const payload = {
+        customerId: document.getElementById("lf_customerId").value,
+        customerName: document.getElementById("lf_customerName").value,
+        userName: document.getElementById("lf_userName").value.trim(),
+        mobile,
+        company: document.getElementById("lf_company").value.trim(),
+        email: document.getElementById("lf_email").value.trim(),
+        consent: true,
+        page: location.href,
+        userAgent: navigator.userAgent
+      };
+
+      lf_msg.textContent = "Submitting...";
+      lf_submit.disabled = true;
+
+      try{
+        // Save lead to sheet (no-cors)
+        await fetch(APPS_SCRIPT_LEAD_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {"Content-Type":"text/plain;charset=utf-8"},
+          body: JSON.stringify(payload)
+        });
+
+        // Save locally so next time we don't ask basic form
+        saveLeadOnce(payload);
+
+        // Open WhatsApp with message
+        const msg = encodeURIComponent(
+          `Hi DukeJia Team,\n\nI want to view customer reference details.\n\nMy Details:\nName: ${payload.userName}\nMobile: ${payload.mobile}\nCompany: ${payload.company}\nEmail: ${payload.email || "-"}\n\nRequested Customer ID: ${payload.customerId}\n\nPlease share username/password for access.`
+        );
+        window.open(`https://wa.me/${ADMIN_WA}?text=${msg}`, "_blank", "noopener");
+
+        closeLeadForm();
+
+        // YOUR REQUIRED ALERT
+        alert("Thanks! We have received your request.\n\nPlease wait 15–20 minutes.\nWe will share a username/password on WhatsApp.\n\nAfter you receive it, click the Eye icon again to enter it.");
+
+      }catch(err){
+        lf_msg.textContent = "Submit failed: " + (err?.message || err);
+      }finally{
+        lf_submit.disabled = false;
+      }
+    });
+
+    /* =========================
+       ACCESS MODAL (username/password)
+    ========================== */
+    function openAccessModal(){
+      acc_msg.textContent = "";
+      accessForm.reset();
+      accessModal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+    function closeAccessModal(){
+      accessModal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+    accessClose.addEventListener("click", closeAccessModal);
+    accessCancel.addEventListener("click", closeAccessModal);
+    accessModal.addEventListener("click", e => { if(e.target === accessModal) closeAccessModal(); });
+
+    accessForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const u = document.getElementById("acc_user").value.trim();
+      const p = document.getElementById("acc_pass").value.trim();
+
+      if(!APPS_SCRIPT_VERIFY_URL || APPS_SCRIPT_VERIFY_URL.includes("PASTE_")){
+        acc_msg.textContent = "Admin: Please set APPS_SCRIPT_VERIFY_URL in code first.";
+        return;
+      }
+
+      acc_msg.textContent = "Verifying...";
+      try{
+        const lead = getSavedLead() || {};
+        const res = await fetch(APPS_SCRIPT_VERIFY_URL, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({
+            username: u,
+            password: p,
+            mobile: lead.mobile || "",
+            customerId: pendingCustomerId || ""
+          })
+        });
+
+        const out = await res.json();
+        if(!out || out.ok !== true){
+          acc_msg.textContent = out?.message || "Invalid username/password.";
+          return;
+        }
+
+        // success: unlock for 20 minutes
+        setUnlock(UNLOCK_MINUTES);
+        closeAccessModal();
+        renderCustomers();
+        alert("Access granted ✅ Names visible for 20 minutes.");
+
+      }catch(err){
+        acc_msg.textContent = "Verify failed: " + (err?.message || err);
+      }
+    });
+
+    /* =========================
+       MAP (mask name when locked)
+    ========================== */
+    let map;
+    let markers = [];
+
+    function initMap(){
+      map = L.map("map").setView([22.9, 78.5], 5);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+      updateMapMarkers();
+    }
+    function refreshMapSize(){
+      if(!map) return;
+      setTimeout(() => map.invalidateSize(true), 50);
+    }
+    function normalizeLatLng(coord){
+      if(!Array.isArray(coord) || coord.length !== 2) return null;
+      let a = Number(coord[0]), b = Number(coord[1]);
+      if(!Number.isFinite(a) || !Number.isFinite(b)) return null;
+      const looksSwapped = Math.abs(a) > 90 && Math.abs(b) <= 90;
+      if(looksSwapped) [a,b] = [b,a];
+      if(Math.abs(a) > 90 || Math.abs(b) > 180) return null;
+      return [a,b];
+    }
+
+    function updateMapMarkers(){
+      if(!map) return;
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
+
+      const filtered = getFilteredCustomers();
+      const unlocked = isUnlocked();
+
+      filtered.forEach(c => {
+        const latlng = normalizeLatLng(c.coord);
+        if(!latlng) return;
+
+        const displayName = unlocked ? (c.name || "-") : maskName(c.name);
+
+        const marker = L.marker(latlng).addTo(map).bindPopup(`
+          <div style="min-width:220px;">
+            <h3 style="margin:0 0 6px;">${displayName}</h3>
+            <p style="margin:0 0 6px;"><b>Location:</b> ${c.city || "-"}</p>
+            <p style="margin:0 0 6px;"><b>Model:</b> ${c.model || "-"}</p>
+            <button
+              style="margin-top:8px;padding:8px 12px;background:#045285;color:#fff;border:none;border-radius:8px;cursor:pointer;"
+              onclick="window.__eyeFromMap(${c.id})"
+            >
+              <i class="fa-solid fa-eye"></i> Request / Enter Access
+            </button>
+          </div>
+        `);
+
+        markers.push(marker);
+      });
+
+      if(markers.length === 0){
+        map.setView([22.9, 78.5], 5);
+        return;
+      }
+      const group = new L.featureGroup(markers);
+      map.fitBounds(group.getBounds().pad(0.15));
+    }
+
+    // helper for popup button
+    window.__eyeFromMap = function(id){
+      onEyeClick(Number(id));
+      if(map) map.closePopup();
+    }
+
+    /* =========================
+       INITIAL LOAD
+    ========================== */
+    switchView("map");
+    loadCustomers();
+
+  </script>
+</body>
+</html>
