@@ -1,84 +1,57 @@
-# 🌐 CoditByNeha — Minimal Front Page
 
-A clean, fast, and responsive landing page for **CoditByNeha**, a study materials hub covering programming languages, frameworks, backend, and graphics concepts.
+# coditbyneha-portfolio
 
----
+**A dynamic and modern React portfolio built with Vite.** This project showcases personal projects, skills, and interactive sections with smooth animations and responsive layouts.  
 
-## 🚀 Overview
+## Features
 
-This project is a **single-file HTML/CSS/JS** front page with minimal dependencies and fast loading.  
-It serves as the **gateway** to the rest of the CoditByNeha site (e.g., `materials.html`, `roadmaps.html`).
+- **Hero Section** – Eye-catching introduction with smooth animations. ✅ Completed  
+- **Moving Grid** – Interactive dynamic grid layout. ✅ Completed  
+- **Other Sections** – Currently being enhanced for:  
+  - Better alignment and professional layout  
+  - More dynamic content and interactivity  
+  - Polished typography and spacing  
 
-### ✨ Features
+## Tech Stack
 
-- **Modern UI** — built with pure HTML & CSS (no frameworks)
-- **Responsive layout** — adapts from desktop to mobile
-- **Minimal distractions** — only key sections shown
-- **Keyboard shortcut:** `/` focuses the search bar
-- **Light/Dark mode auto-detection** — respects system preferences
-- **Accessible navigation** and semantic structure
+- **Frontend:** React, Vite  
+- **Styling:** Tailwind CSS (with custom classes like `text-white`, `isolate-z-10`, `text-left`)  
+- **Linting:** ESLint for code quality  
+- **Deployment:** Vercel  
 
----
+## Installation
 
-## 🧱 Structure
+1. Clone the repository:  
+```bash
+git clone https://github.com/yourusername/coditbyneha-portfolio.git
+```
 
-### Links
-The buttons and quick links route to:
-- `materials.html` – main study materials grid  
-- `roadmaps.html` – learning paths and plans  
+2. Navigate into the project folder:  
+```bash
+cd coditbyneha-portfolio
+```
 
-You can rename or change these destinations as needed.
+3. Install dependencies:  
+```bash
+npm install
+```
 
----
+4. Run the development server:  
+```bash
+npm run dev
+```
 
-## 🖌️ Customization
+5. Open the local development server in your browser (default: `http://localhost:5173`)  
 
-1. **Branding**
-   - Update the text inside `<title>` and `.brand`.
-   - Change the logo background colors inside the CSS variable `--primary` and `--accent`.
+## Usage
 
-2. **Navigation**
-   - Modify header links or add new pages.
+- `<Hero />` and `<MovingGrid />` sections are fully functional  
+- Other sections are actively being enhanced for better layout, responsiveness, and dynamic content  
 
-3. **Quick Links**
-   - Edit the four `.card` elements in the “Quick Links” section to match your categories.
+## Contribution
 
-4. **Search**
-   - The search form uses a `GET` action to `materials.html`.  
-     You can integrate a real search engine or JavaScript filtering later.
+Feel free to fork this project and submit pull requests to improve the remaining sections. Suggestions for animations, responsive grids, or professional layout improvements are welcome!  
 
----
+## License
 
-## ⚙️ Setup & Deployment
-
-No build step required — just open `index.html` in your browser.
-
-### To deploy:
-- **Vercel / Netlify / GitHub Pages:** Drag and drop this file (or the full site folder).
-- **Manual Hosting:** Place `index.html` in your server root directory.
-
----
-
-## 💡 Shortcuts
-
-| Key | Action |
-|-----|--------|
-| `/` | Focus search bar |
-| —   | Auto light/dark theme detection |
-
----
-
-## 🧠 Credits
-
-- Designed and coded by **Neha Rajput**  
-- Part of the **CoditByNeha** study ecosystem  
-- Font: [Inter](https://fonts.google.com/specimen/Inter)
-
----
-
-## 📄 License
-
-Open-source project under the **MIT License**.  
-Feel free to modify, share, or extend this design.
-
-
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
