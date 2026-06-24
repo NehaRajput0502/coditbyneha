@@ -1,5 +1,5 @@
 
-# coditbyneha-portfolio
+# coditbyneha
 
 **A dynamic and modern React portfolio built with Vite.** This project showcases personal projects, skills, and interactive sections with smooth animations and responsive layouts.  
 
